@@ -1,54 +1,62 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
-
+  // State
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Login Function
   const handleLogin = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
 
-    
-    navigate("/dashboard");
-  };
+  if (email === "" || password === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
+  console.log("Email:", email);
+  console.log("Password:", password);
+
+  navigate("/dashboard");
+};
 
   return (
-    <div>
-      <h1>Placement Tracker</h1>
-      <h2>Login</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <h1>Placement Tracker</h1>
 
-      
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <h2>Login</h2>
 
-      <br /><br />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <br />
+        <br />
 
-      <br /><br />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        <br />
+        <br />
 
-      <p>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
+        <button onClick={handleLogin}>Login</button>
+
+        <p>
+          Don't have an account?{" "}
+          <Link to="/register">Register</Link>
+        </p>
+      </div>
     </div>
   );
 }
