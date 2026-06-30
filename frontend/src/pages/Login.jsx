@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "../styles/Login.css";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -10,17 +12,35 @@ function Login() {
   const [password, setPassword] = useState("");
 
   // Login Function
-  const handleLogin = () => {
+  const handleLogin = async () => {
 
   if (email === "" || password === "") {
-    alert("Please fill all fields");
+    toast.error("Please fill all fields");
     return;
   }
 
-  console.log("Email:", email);
-  console.log("Password:", password);
+  try {
 
+  const response = await api.post("/users/login", {
+  email,
+  password,
+});
+
+localStorage.setItem("token", response.data.token);
+
+toast.success("Login Successful");
+
+setTimeout(() => {
   navigate("/dashboard");
+}, 1000);
+
+} catch (error) {
+
+  toast.error(
+error.response?.data?.message || "Something went wrong"
+);
+
+}
 };
 
   return (

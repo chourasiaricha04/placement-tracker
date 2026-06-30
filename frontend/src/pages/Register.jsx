@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import api from "../services/api";
+import { toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
@@ -11,18 +13,37 @@ function Register() {
   const [password, setPassword] = useState("");
 
   // Register Function
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (name === "" || email === "" || password === "") {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
 
-    // Temporary Navigation
-    navigate("/dashboard");
+  await api.post("/users/register", {
+  name,
+  email,
+  password,
+});
+
+  toast.success("Registration Successful");
+
+setTimeout(() => {
+  navigate("/");
+}, 1000);
+
+}catch (error) {
+
+  console.log(error);
+
+  console.log(error.response);
+
+  toast.error(
+error.response?.data?.message || "Something went wrong"
+);
+
+}
   };
 
   return (
