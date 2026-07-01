@@ -9,6 +9,9 @@ import StatsCards from "../components/StatsCards";
 import { toast } from "react-toastify";
 import "../styles/dashboard.css";
 import AnalyticsChart from "../components/AnalyticsChart";
+import DeleteModal from "../components/DeleteModal";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -23,6 +26,13 @@ function Dashboard() {
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+
+  const [deadline, setDeadline] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [deleteId, setDeleteId] = useState(null);
 
   // ================= Fetch Companies =================
 
@@ -50,21 +60,25 @@ function Dashboard() {
       if (editingId) {
         // UPDATE
 
-        await api.put(`/company/${editingId}`, {
-          companyName,
-          role,
-          status,
-        });
+       await api.put(`/company/${editingId}`, {
+  companyName,
+  role,
+  status,
+  deadline,
+  notes,
+});
 
         toast.success("Company Updated Successfully");
       } else {
         // ADD
 
         await api.post("/company/add", {
-          companyName,
-          role,
-          status,
-        });
+  companyName,
+  role,
+  status,
+  deadline,
+  notes,
+});
 
         toast.success("Company Added Successfully");
       }
@@ -75,6 +89,8 @@ function Dashboard() {
       setRole("");
       setStatus("Applied");
       setEditingId(null);
+      setDeadline("");
+      setNotes("");
 
       fetchCompanies();
 
@@ -101,6 +117,48 @@ function Dashboard() {
 );
     }
   };
+
+  const exportToExcel = () => {
+
+  const data = companies.map((company) => ({
+
+    Company: company.companyName,
+
+    Role: company.role,
+
+    Status: company.status,
+
+    Deadline: company.deadline
+      ? new Date(company.deadline).toLocaleDateString()
+      : "N/A",
+
+    Notes: company.notes || "",
+
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Placements"
+  );
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
+
+  const file = new Blob([excelBuffer], {
+    type:
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+  });
+
+  saveAs(file, "PlacementTracker.xlsx");
+
+};
 
   const filteredCompanies = companies.filter((company) => {
 
@@ -154,6 +212,24 @@ function Dashboard() {
   setFilter={setFilter}
 />
 
+<div style={{ marginBottom: "20px" }}>
+  <button
+    onClick={exportToExcel}
+    style={{
+      background: "#22c55e",
+      color: "white",
+      border: "none",
+      padding: "12px 20px",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "15px",
+      fontWeight: "600",
+    }}
+  >
+    📥 Export to Excel
+  </button>
+</div>
+
       <div className="form-card">
 
         <h2>
@@ -173,6 +249,19 @@ function Dashboard() {
           value={role}
           onChange={(e) => setRole(e.target.value)}
         />
+
+        <input
+  type="date"
+  value={deadline}
+  onChange={(e) => setDeadline(e.target.value)}
+/>
+
+<textarea
+  placeholder="Notes..."
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
+  rows="4"
+/>
 
         <select
           value={status}
@@ -226,9 +315,18 @@ function Dashboard() {
 
       setStatus(company.status);
 
+      setDeadline(company.deadline || "");
+      setNotes(company.notes || "");
+
     }}
 
-    onDelete={() => handleDelete(company._id)}
+  onDelete={() => {
+
+  setDeleteId(company._id);
+
+  setShowModal(true);
+
+}}
 
   />
 
@@ -236,6 +334,19 @@ function Dashboard() {
       )}
 
     </div>
+
+    <DeleteModal
+  isOpen={showModal}
+  onClose={() => {
+    setShowModal(false);
+    setDeleteId(null);
+  }}
+  onConfirm={() => {
+    handleDelete(deleteId);
+    setShowModal(false);
+    setDeleteId(null);
+  }}
+/>
 
   </div>
 );

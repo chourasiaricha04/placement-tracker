@@ -1,4 +1,11 @@
-import { FaBuilding, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaEdit,
+  FaTrash,
+  FaCalendarAlt,
+  FaStickyNote,
+  FaHourglassHalf,
+} from "react-icons/fa";
 import "../styles/companycard.css";
 
 function CompanyCard({
@@ -51,6 +58,33 @@ function CompanyCard({
       <span className={`status ${getStatusClass()}`}>
         {company.status}
       </span>
+
+      <div className="company-details">
+
+  <p>
+    <FaCalendarAlt />
+    Applied :
+    {" "}
+    {new Date(company.appliedDate).toLocaleDateString()}
+  </p>
+
+  {company.deadline && (
+    <p>
+      <FaHourglassHalf />
+      Deadline :
+      {" "}
+      {new Date(company.deadline).toLocaleDateString()}
+    </p>
+  )}
+
+  {company.notes && (
+    <p>
+      <FaStickyNote />
+      {company.notes}
+    </p>
+  )}
+
+</div>
 
       <div className="company-actions">
 

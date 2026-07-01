@@ -8,14 +8,25 @@ const router = express.Router();
 
 router.post("/add", protect, async (req, res) => {
   try {
-    const { companyName, role, status } = req.body;
+    const {
+  companyName,
+  role,
+  status,
+  deadline,
+  notes,
+} = req.body;
 
     const company = await Company.create({
-      companyName,
-      role,
-      status,
-      user: req.user.id,
-    });
+
+  companyName,
+  role,
+  status,
+  deadline,
+  notes,
+
+  user: req.user.id,
+
+});
 
     res.status(201).json(company);
 

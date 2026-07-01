@@ -22,6 +22,16 @@ const companySchema = new mongoose.Schema({
     default: Date.now,
   },
 
+  deadline: {
+  type: Date,
+},
+
+notes: {
+  type: String,
+  default: "",
+},
+  
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
