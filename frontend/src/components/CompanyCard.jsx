@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import "../styles/companycard.css";
 
+
 function CompanyCard({
   company,
   onEdit,
@@ -58,7 +59,31 @@ const firstLetter =
 
   return (
 
-    <div className="company-card">
+    <div
+  className="company-card"
+
+  initial={{
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+  }}
+
+  animate={{
+    opacity: 1,
+    y: 0,
+    scale: 1,
+  }}
+
+  transition={{
+    duration: 0.45,
+    ease: "easeOut",
+  }}
+
+  whileHover={{
+    y: -10,
+    scale: 1.02,
+  }}
+>
 
       <div className="company-top">
 

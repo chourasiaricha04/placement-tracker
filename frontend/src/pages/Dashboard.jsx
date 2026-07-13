@@ -13,6 +13,10 @@ import DeleteModal from "../components/DeleteModal";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 //import UpcomingDeadlines from "../components/UpcomingDeadlines";
+import DashboardInsights from "../components/DashboardInsights";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import ProgressRing from "../components/ProgressRing";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -160,6 +164,60 @@ function Dashboard() {
   saveAs(file, "PlacementTracker.xlsx");
 
 };
+const exportToPDF = () => {
+
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Placement Tracker Report", 14, 20);
+
+  const tableData = companies.map((company) => [
+
+    company.companyName,
+
+    company.role,
+
+    company.status,
+
+    company.deadline
+      ? new Date(company.deadline).toLocaleDateString()
+      : "N/A",
+
+    company.notes || "-",
+
+  ]);
+
+  autoTable(doc, {
+    head: [["Company", "Role", "Status", "Deadline", "Notes"]],
+    body: tableData,
+    startY: 30,
+    styles: {
+      fontSize: 10,
+    },
+    headStyles: {
+      fillColor: [99, 102, 241],
+    },
+  });
+
+  doc.save("PlacementTracker.pdf");
+
+};
+<button
+  onClick={exportToPDF}
+  style={{
+    background: "#ef4444",
+    color: "white",
+    border: "none",
+    padding: "12px 20px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontSize: "15px",
+    fontWeight: "600",
+    marginLeft: "12px",
+  }}
+>
+  📄 Export to PDF
+</button>
 
   const filteredCompanies = companies.filter((company) => {
 
@@ -198,11 +256,16 @@ function Dashboard() {
 
     <div className="dashboard-content">
 
-      <Header />
+     <Header companies={companies} />
+
+<DashboardInsights companies={companies} />
+<ProgressRing companies={companies} />
 
 <StatsCards companies={companies} />
 
 <AnalyticsChart companies={companies} />
+
+
 
 
 
@@ -213,7 +276,13 @@ function Dashboard() {
   setFilter={setFilter}
 />
 
-<div style={{ marginBottom: "20px" }}>
+<div
+  style={{
+    marginBottom: "20px",
+    display: "flex",
+    gap: "12px",
+  }}
+>
   <button
     onClick={exportToExcel}
     style={{
@@ -228,6 +297,22 @@ function Dashboard() {
     }}
   >
     📥 Export to Excel
+  </button>
+
+  <button
+    onClick={exportToPDF}
+    style={{
+      background: "#ef4444",
+      color: "white",
+      border: "none",
+      padding: "12px 20px",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "15px",
+      fontWeight: "600",
+    }}
+  >
+    📄 Export to PDF
   </button>
 </div>
 

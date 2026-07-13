@@ -1,7 +1,10 @@
 import "../styles/header.css";
+import { useState } from "react";
 import { Bell, UserCircle } from "lucide-react";
 
-function Header() {
+ function Header({ companies }) {
+
+  
 
   const hour = new Date().getHours();
 
@@ -19,6 +22,26 @@ function Header() {
     month: "long",
     year: "numeric",
   });
+
+  const [showNotifications, setShowNotifications] = useState(false);
+
+const todayDate = new Date();
+
+const notifications = companies.filter(company => {
+
+  if (!company.deadline) return false;
+
+  const diff = Math.ceil(
+
+    (new Date(company.deadline) - todayDate)
+
+    /(1000*60*60*24)
+
+  );
+
+  return diff <= 2;
+
+});
 
   return (
     <div className="header">
@@ -45,13 +68,85 @@ function Header() {
 
       <div className="header-right">
 
-        <div className="notification">
+        <div
+  className="notification"
+  onClick={() => setShowNotifications(!showNotifications)}
+>
 
-          <Bell size={21}/>
+  <Bell size={21} />
 
-          <span></span>
+  {notifications.length > 0 && (
+    <span className="notification-count">
+      {notifications.length}
+    </span>
+  )}
 
-        </div>
+  {showNotifications && (
+    <div className="notification-dropdown">
+
+      <h3>Upcoming Deadlines</h3>
+
+      {notifications.length === 0 ? (
+
+        <p>No Notifications 🎉</p>
+
+      ) : (
+
+        notifications.map((company) => {
+
+  const diff = Math.ceil(
+    (new Date(company.deadline) - new Date()) /
+    (1000 * 60 * 60 * 24)
+  );
+
+  let label = "";
+  let badge = "";
+
+  if (diff < 0) {
+    label = "Overdue";
+    badge = "danger";
+  } else if (diff === 0) {
+    label = "Today";
+    badge = "today";
+  } else if (diff === 1) {
+    label = "Tomorrow";
+    badge = "tomorrow";
+  } else {
+    label = `${diff} days left`;
+    badge = "upcoming";
+  }
+
+  return (
+
+    <div
+      key={company._id}
+      className="notification-item"
+    >
+
+      <div>
+
+        <strong>{company.companyName}</strong>
+
+        <span>{company.role}</span>
+
+      </div>
+
+      <div className={`notify-badge ${badge}`}>
+        {label}
+      </div>
+
+    </div>
+
+  );
+
+})
+
+      )}
+
+    </div>
+  )}
+
+</div>
 
         <div className="profile">
 

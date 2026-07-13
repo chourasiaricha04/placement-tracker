@@ -1,0 +1,57 @@
+.insights{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin:25px 0 35px;
+}
+
+.insight-card{
+    position:relative;
+    overflow:hidden;
+    padding:25px;
+    border-radius:22px;
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+    transition:.35s;
+}
+
+.insight-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 45px rgba(99,102,241,.25);
+    border-color:#6366f1;
+}
+
+.insight-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.12),
+        transparent
+    );
+    transition:.8s;
+}
+
+.insight-card:hover::before{
+    left:100%;
+}
+
+.insight-card h4{
+    color:#94a3b8;
+    font-size:15px;
+    margin-bottom:15px;
+}
+
+.insight-card h2{
+    color:white;
+    font-size:34px;
+    margin:0;
+    font-weight:700;
+}

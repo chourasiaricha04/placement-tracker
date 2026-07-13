@@ -205,3 +205,70 @@ box-shadow:0 10px 25px rgba(99,102,241,.35);
   }
 
 }
+
+.export-buttons{
+    display:flex;
+    gap:15px;
+    margin:25px 0;
+    flex-wrap:wrap;
+}
+
+.export-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:14px 22px;
+
+    border:none;
+
+    border-radius:14px;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.export-btn:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.excel-btn{
+
+    background:#22c55e;
+
+}
+
+.excel-btn:hover{
+
+    background:#16a34a;
+
+}
+
+.pdf-btn{
+
+    background:#ef4444;
+
+}
+
+.pdf-btn:hover{
+
+    background:#dc2626;
+
+}

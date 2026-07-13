@@ -231,3 +231,209 @@ justify-content:space-between;
 }
 
 }
+
+.notification{
+
+    position:relative;
+
+    width:50px;
+
+    height:50px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.notification:hover{
+
+    background:#6366f1;
+
+    transform:translateY(-3px);
+
+}
+
+.notification-count{
+
+    position:absolute;
+
+    top:-5px;
+
+    right:-5px;
+
+    width:20px;
+
+    height:20px;
+
+    border-radius:50%;
+
+    background:#ef4444;
+
+    color:white;
+
+    font-size:11px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+}
+
+.notification-dropdown{
+
+    position:absolute;
+
+    top:65px;
+
+    right:0;
+
+    width:300px;
+
+    background:#1e293b;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+    z-index:999;
+
+    animation:fadeDown .3s ease;
+
+}
+
+.notification-dropdown h3{
+
+    color:white;
+
+    margin-bottom:15px;
+
+}
+
+.notification-item{
+
+    padding:12px;
+
+    background:#334155;
+
+    border-radius:12px;
+
+    margin-bottom:10px;
+
+}
+
+.notification-item strong{
+
+    display:block;
+
+    color:white;
+
+}
+
+.notification-item span{
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+}
+
+@keyframes fadeDown{
+
+from{
+
+opacity:0;
+
+transform:translateY(-10px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.notification-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:#334155;
+
+    margin-bottom:10px;
+
+    transition:.3s;
+
+}
+
+.notification-item:hover{
+
+    background:#475569;
+
+}
+
+.notify-badge{
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.danger{
+
+    background:#ef4444;
+
+}
+
+.today{
+
+    background:#f59e0b;
+
+}
+
+.tomorrow{
+
+    background:#3b82f6;
+
+}
+
+.upcoming{
+
+    background:#22c55e;
+
+}
