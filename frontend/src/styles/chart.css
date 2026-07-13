@@ -10,3 +10,31 @@
     color:white;
     margin-bottom:20px;
 }
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+  .chart-card {
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  .chart-card h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .chart-card {
+    padding: 15px;
+  }
+
+  .chart-card h2 {
+    font-size: 18px;
+  }
+
+}

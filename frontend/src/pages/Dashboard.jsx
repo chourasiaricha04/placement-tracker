@@ -12,6 +12,7 @@ import AnalyticsChart from "../components/AnalyticsChart";
 import DeleteModal from "../components/DeleteModal";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+//import UpcomingDeadlines from "../components/UpcomingDeadlines";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -199,13 +200,13 @@ function Dashboard() {
 
       <Header />
 
-      <StatsCards companies={companies} />
+<StatsCards companies={companies} />
 
-      <AnalyticsChart companies={companies} />
+<AnalyticsChart companies={companies} />
 
 
 
-      <SearchBar
+<SearchBar
   search={search}
   setSearch={setSearch}
   filter={filter}

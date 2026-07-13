@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/Login.css";
 import { toast } from "react-toastify";
+import { FaChartLine } from "react-icons/fa";
 
 function Login() {
   const navigate = useNavigate();
@@ -44,41 +45,59 @@ error.response?.data?.message || "Something went wrong"
 };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1>Placement Tracker</h1>
+  <div className="login-container">
 
-        <h2>Login</h2>
+    <div className="login-left">
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+  <div className="hero-icon">
+    <FaChartLine />
+  </div>
 
-        <br />
-        <br />
+  <h1>Placement Tracker</h1>
 
-        <input
-          type="password"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+  <h2>
+    Land Your Dream Job Faster.
+  </h2>
 
-        <br />
-        <br />
+  <p>
+    Track applications, interviews,
+    deadlines and offers from one
+    beautiful dashboard.
+  </p>
 
-        <button onClick={handleLogin}>Login</button>
+</div>
 
-        <p>
-          Don't have an account?{" "}
-          <Link to="/register">Register</Link>
-        </p>
-      </div>
+    <div className="login-card">
+
+      <h3>Welcome Back 👋</h3>
+
+      <input
+        type="email"
+        placeholder="Email Address"
+        value={email}
+        onChange={(e)=>setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e)=>setPassword(e.target.value)}
+      />
+
+      <button onClick={handleLogin}>
+        Continue →
+      </button>
+
+      <p>
+        Don't have an account?
+        <Link to="/register"> Register</Link>
+      </p>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Login;

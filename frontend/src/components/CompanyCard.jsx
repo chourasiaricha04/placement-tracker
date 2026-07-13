@@ -12,7 +12,20 @@ function CompanyCard({
   company,
   onEdit,
   onDelete,
-}) {
+}){ 
+
+const avatarColors = {
+  Microsoft: "#2563eb",
+  Google: "#ef4444",
+  Amazon: "#f59e0b",
+  Adobe: "#dc2626",
+  Netflix: "#e50914",
+  Infosys: "#06b6d4",
+  TCS: "#0f766e",
+  Wipro: "#7c3aed",
+  Accenture: "#9333ea",
+};
+
 
   const getStatusClass = () => {
 
@@ -37,13 +50,26 @@ function CompanyCard({
 
   };
 
+  const avatarColor =
+  avatarColors[company.companyName] || "#6366f1";
+
+const firstLetter =
+  company.companyName.charAt(0).toUpperCase();
+
   return (
 
     <div className="company-card">
 
       <div className="company-top">
 
-        <FaBuilding className="company-icon" />
+      <div
+  className="company-avatar"
+  style={{
+    background: avatarColor,
+  }}
+>
+  {firstLetter}
+</div>
 
         <div>
 
@@ -55,9 +81,11 @@ function CompanyCard({
 
       </div>
 
-      <span className={`status ${getStatusClass()}`}>
-        {company.status}
-      </span>
+      <div className="status-wrapper">
+  <span className={`status ${getStatusClass()}`}>
+    {company.status}
+  </span>
+</div>
 
       <div className="company-details">
 
@@ -78,11 +106,11 @@ function CompanyCard({
   )}
 
   {company.notes && (
-    <p>
-      <FaStickyNote />
-      {company.notes}
-    </p>
-  )}
+  <div className="notes-box">
+    <FaStickyNote />
+    <span>{company.notes}</span>
+  </div>
+)}
 
 </div>
 

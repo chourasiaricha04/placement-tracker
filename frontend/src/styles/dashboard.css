@@ -174,3 +174,34 @@ box-shadow:0 10px 25px rgba(99,102,241,.35);
     color:#cbd5e1;
 
 }
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .dashboard-content {
+    padding: 10px;
+  }
+
+}

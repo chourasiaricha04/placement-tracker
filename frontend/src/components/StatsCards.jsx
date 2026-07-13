@@ -7,6 +7,9 @@ import {
 } from "react-icons/fa";
 
 import "../styles/stats.css";
+//import CountUp from "react-countup";
+
+
 
 function StatsCards({ companies }) {
 
@@ -28,38 +31,43 @@ function StatsCards({ companies }) {
     (company) => company.status === "Rejected"
   ).length;
 
-  const stats = [
-    {
-      title: "Total",
-      value: total,
-      icon: <FaBuilding />,
-      color: "#6366F1",
-    },
-    {
-      title: "Applied",
-      value: applied,
-      icon: <FaBriefcase />,
-      color: "#F59E0B",
-    },
-    {
-      title: "Interview",
-      value: interview,
-      icon: <FaClock />,
-      color: "#3B82F6",
-    },
-    {
-      title: "Selected",
-      value: selected,
-      icon: <FaCheckCircle />,
-      color: "#22C55E",
-    },
-    {
-      title: "Rejected",
-      value: rejected,
-      icon: <FaTimesCircle />,
-      color: "#EF4444",
-    },
-  ];
+ const stats = [
+  {
+    title: "Total",
+    value: total,
+    icon: <FaBuilding />,
+    color: "#6366F1",
+    trend: "+12%",
+  },
+  {
+    title: "Applied",
+    value: applied,
+    icon: <FaBriefcase />,
+    color: "#F59E0B",
+    trend: "+8%",
+  },
+  {
+    title: "Interview",
+    value: interview,
+    icon: <FaClock />,
+    color: "#3B82F6",
+    trend: "+5%",
+  },
+  {
+    title: "Selected",
+    value: selected,
+    icon: <FaCheckCircle />,
+    color: "#22C55E",
+    trend: "+3%",
+  },
+  {
+    title: "Rejected",
+    value: rejected,
+    icon: <FaTimesCircle />,
+    color: "#EF4444",
+    trend: "-2%",
+  },
+];
 
   return (
 
@@ -83,13 +91,17 @@ function StatsCards({ companies }) {
               {item.icon}
             </div>
 
-            <div>
+           <div className = "stats-info">
 
-              <h3>{item.value}</h3>
+ <h3>{item.value}</h3>
 
-              <p>{item.title}</p>
+  <p>{item.title}</p>
 
-            </div>
+  <span className="trend">
+    {item.trend}
+  </span>
+
+</div>
 
           </div>
 
