@@ -7,12 +7,14 @@ import {
   FaHourglassHalf,
 } from "react-icons/fa";
 import "../styles/companycard.css";
+import ProgressTimeline from "./ProgressTimeline";
 
 
 function CompanyCard({
   company,
   onEdit,
   onDelete,
+  onPrepare,
 }){ 
 
 const avatarColors = {
@@ -61,28 +63,6 @@ const firstLetter =
 
     <div
   className="company-card"
-
-  initial={{
-    opacity: 0,
-    y: 40,
-    scale: 0.95,
-  }}
-
-  animate={{
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  }}
-
-  transition={{
-    duration: 0.45,
-    ease: "easeOut",
-  }}
-
-  whileHover={{
-    y: -10,
-    scale: 1.02,
-  }}
 >
 
       <div className="company-top">
@@ -111,6 +91,8 @@ const firstLetter =
     {company.status}
   </span>
 </div>
+
+<ProgressTimeline status={company.status} />
 
       <div className="company-details">
 
@@ -142,13 +124,22 @@ const firstLetter =
       <div className="company-actions">
 
         <button
-          className="edit-btn"
-          onClick={onEdit}
-        >
-          <FaEdit />
+  className="prepare-btn"
+  onClick={onPrepare}
+>
+  📚 Prepare
+</button>
 
-          Edit
-        </button>
+        <button
+  className="edit-btn"
+  onClick={() => {
+    console.log("Edit button clicked");
+    onEdit();
+  }}
+>
+  <FaEdit />
+  Edit
+</button>
 
         <button
           className="delete-btn"

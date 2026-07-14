@@ -474,3 +474,18 @@ color:#818cf8;
     }
 
 }
+.prepare-btn{
+
+    background:#0ea5e9;
+
+    color:white;
+
+}
+
+.prepare-btn:hover{
+
+    background:#0284c7;
+
+    transform:translateY(-3px);
+
+}

@@ -17,6 +17,9 @@ import DashboardInsights from "../components/DashboardInsights";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ProgressRing from "../components/ProgressRing";
+import RecentActivity from "../components/RecentActivity";
+import InterviewModal from "../components/InterviewModal";
+import ActivityLog from "../components/ActivityLog";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -39,6 +42,12 @@ function Dashboard() {
 
   const [deleteId, setDeleteId] = useState(null);
 
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
+
+  const [selectedCompany, setSelectedCompany] = useState("");
+
+  const [activities, setActivities] = useState([]);
+
   // ================= Fetch Companies =================
 
   const fetchCompanies = async () => {
@@ -55,75 +64,121 @@ function Dashboard() {
 
   // ================= Add / Update Company =================
 
-  const handleSubmit = async () => {
-    if (companyName === "" || role === "") {
-      toast.error("Please fill all fields");
-      return;
+const handleSubmit = async () => {
+
+  if (companyName === "" || role === "") {
+    toast.error("Please fill all fields");
+    return;
+  }
+
+  try {
+
+    if (editingId) {
+
+      // ================= UPDATE =================
+
+      await api.put(`/company/${editingId}`, {
+        companyName,
+        role,
+        status,
+        deadline,
+        notes,
+      });
+
+      toast.success("Company Updated Successfully");
+
+      setActivities((prev) => [
+        {
+          icon: "🟡",
+          title: `Updated ${companyName}`,
+          time: new Date().toLocaleTimeString(),
+        },
+        ...prev,
+      ]);
+
+    } else {
+
+      // ================= ADD =================
+
+      await api.post("/company/add", {
+        companyName,
+        role,
+        status,
+        deadline,
+        notes,
+      });
+
+      toast.success("Company Added Successfully");
+
+      setActivities((prev) => [
+        {
+          icon: "🟢",
+          title: `Added ${companyName}`,
+          time: new Date().toLocaleTimeString(),
+        },
+        ...prev,
+      ]);
+
     }
 
-    try {
-      if (editingId) {
-        // UPDATE
+    // ================= Clear Form =================
 
-       await api.put(`/company/${editingId}`, {
-  companyName,
-  role,
-  status,
-  deadline,
-  notes,
-});
+    setCompanyName("");
+    setRole("");
+    setStatus("Applied");
+    setEditingId(null);
+    setDeadline("");
+    setNotes("");
 
-        toast.success("Company Updated Successfully");
-      } else {
-        // ADD
+    fetchCompanies();
 
-        await api.post("/company/add", {
-  companyName,
-  role,
-  status,
-  deadline,
-  notes,
-});
+  } catch (error) {
 
-        toast.success("Company Added Successfully");
-      }
+    toast.error(
+      error.response?.data?.message || "Something went wrong"
+    );
 
-      // Clear Form
+  }
 
-      setCompanyName("");
-      setRole("");
-      setStatus("Applied");
-      setEditingId(null);
-      setDeadline("");
-      setNotes("");
-
-      fetchCompanies();
-
-    } catch (error) {
-      toast.error(
-  error.response?.data?.message || "Something went wrong"
-);
-    }
-  };
-
+};
   // ================= Delete Company =================
 
   const handleDelete = async (id) => {
-    try {
-      await api.delete(`/company/${id}`);
 
-      toast.success("Company Deleted Successfully");
+  try {
 
-      fetchCompanies();
+    // Find company before deleting
+    const deletedCompany = companies.find(
+      (company) => company._id === id
+    );
 
-    } catch (error) {
-      toast.error(
-  error.response?.data?.message || "Something went wrong"
-);
-    }
-  };
+    await api.delete(`/company/${id}`);
 
-  const exportToExcel = () => {
+    toast.success("Company Deleted Successfully");
+
+    // Add activity
+    setActivities((prev) => [
+      {
+        icon: "🔴",
+        title: `Deleted ${deletedCompany?.companyName || "Company"}`,
+        time: new Date().toLocaleTimeString(),
+      },
+      ...prev,
+    ]);
+
+    fetchCompanies();
+
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.message || "Something went wrong"
+    );
+
+  }
+
+};
+
+ const exportToExcel = () => {
 
   const data = companies.map((company) => ({
 
@@ -156,10 +211,13 @@ function Dashboard() {
     type: "array",
   });
 
-  const file = new Blob([excelBuffer], {
-    type:
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-  });
+  const file = new Blob(
+    [excelBuffer],
+    {
+      type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    }
+  );
 
   saveAs(file, "PlacementTracker.xlsx");
 
@@ -202,22 +260,7 @@ const exportToPDF = () => {
   doc.save("PlacementTracker.pdf");
 
 };
-<button
-  onClick={exportToPDF}
-  style={{
-    background: "#ef4444",
-    color: "white",
-    border: "none",
-    padding: "12px 20px",
-    borderRadius: "10px",
-    cursor: "pointer",
-    fontSize: "15px",
-    fontWeight: "600",
-    marginLeft: "12px",
-  }}
->
-  📄 Export to PDF
-</button>
+
 
   const filteredCompanies = companies.filter((company) => {
 
@@ -264,6 +307,11 @@ const exportToPDF = () => {
 <StatsCards companies={companies} />
 
 <AnalyticsChart companies={companies} />
+
+
+
+<RecentActivity companies={companies} />
+<ActivityLog activities={activities} />
 
 
 
@@ -387,6 +435,8 @@ const exportToPDF = () => {
 
   <CompanyCard
 
+   
+
     key={company._id}
 
     company={company}
@@ -400,8 +450,11 @@ const exportToPDF = () => {
       setRole(company.role);
 
       setStatus(company.status);
-
-      setDeadline(company.deadline || "");
+setDeadline(
+  company.deadline
+    ? company.deadline.split("T")[0]
+    : ""
+);
       setNotes(company.notes || "");
 
     }}
@@ -412,6 +465,14 @@ const exportToPDF = () => {
 
   setShowModal(true);
 
+}
+  }
+onPrepare={() => {
+
+  setSelectedCompany(company.companyName);
+
+  setShowInterviewModal(true);
+
 }}
 
   />
@@ -420,6 +481,19 @@ const exportToPDF = () => {
       )}
 
     </div>
+
+
+    {showInterviewModal && (
+
+  <InterviewModal
+
+    companyName={selectedCompany}
+
+    onClose={() => setShowInterviewModal(false)}
+
+  />
+
+)}
 
     <DeleteModal
   isOpen={showModal}

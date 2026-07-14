@@ -1,0 +1,171 @@
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    backdrop-filter:blur(8px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+    animation:fadeIn .3s ease;
+
+}
+
+.interview-modal{
+
+    width:650px;
+
+    max-width:92%;
+
+    background:#1e293b;
+
+    border-radius:24px;
+
+    padding:35px;
+
+    color:white;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.4);
+
+    animation:popup .35s ease;
+
+}
+
+.interview-modal h2{
+
+    margin-bottom:10px;
+
+    font-size:30px;
+
+}
+
+.difficulty{
+
+    color:#fbbf24;
+
+    margin-bottom:25px;
+
+    font-size:16px;
+
+}
+
+.interview-modal h3{
+
+    margin-top:22px;
+
+    margin-bottom:10px;
+
+    color:#818cf8;
+
+}
+
+.interview-modal ul{
+
+    padding-left:20px;
+
+}
+
+.interview-modal li{
+
+    margin:8px 0;
+
+    color:#cbd5e1;
+
+}
+
+.interview-modal a{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    color:#60a5fa;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.interview-modal a:hover{
+
+    text-decoration:underline;
+
+}
+
+.close-btn{
+
+    margin-top:30px;
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#6366f1;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.close-btn:hover{
+
+    background:#4f46e5;
+
+}
+
+@keyframes popup{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
