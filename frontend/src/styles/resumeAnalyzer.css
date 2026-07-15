@@ -1,0 +1,40 @@
+.resume-card{
+    background:#1e293b;
+    color:white;
+    padding:25px;
+    border-radius:18px;
+    margin:25px 0;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.resume-card h2{
+    margin-bottom:10px;
+}
+
+.resume-card p{
+    color:#cbd5e1;
+    margin-bottom:20px;
+}
+
+.resume-card input{
+    margin-bottom:20px;
+}
+
+.resume-info{
+    margin-top:20px;
+}
+
+.analyze-btn{
+    margin-top:15px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#6366f1;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.analyze-btn:hover{
+    background:#4f46e5;
+}

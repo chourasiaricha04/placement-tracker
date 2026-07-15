@@ -20,6 +20,7 @@ import ProgressRing from "../components/ProgressRing";
 import RecentActivity from "../components/RecentActivity";
 import InterviewModal from "../components/InterviewModal";
 import ActivityLog from "../components/ActivityLog";
+import ResumeAnalyzer from "../components/ResumeAnalyzer";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -307,7 +308,7 @@ const exportToPDF = () => {
 <StatsCards companies={companies} />
 
 <AnalyticsChart companies={companies} />
-
+<ResumeAnalyzer />
 
 
 <RecentActivity companies={companies} />
