@@ -21,6 +21,9 @@ import RecentActivity from "../components/RecentActivity";
 import InterviewModal from "../components/InterviewModal";
 import ActivityLog from "../components/ActivityLog";
 import ResumeAnalyzer from "../components/ResumeAnalyzer";
+import DashboardActions from "../components/DashboardActions";
+import CompanyForm from "../components/CompanyForm";
+import CompanyList from "../components/CompanyList";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -325,95 +328,33 @@ const exportToPDF = () => {
   setFilter={setFilter}
 />
 
-<div
-  style={{
-    marginBottom: "20px",
-    display: "flex",
-    gap: "12px",
-  }}
->
-  <button
-    onClick={exportToExcel}
-    style={{
-      background: "#22c55e",
-      color: "white",
-      border: "none",
-      padding: "12px 20px",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "15px",
-      fontWeight: "600",
-    }}
-  >
-    📥 Export to Excel
-  </button>
+<DashboardActions
 
-  <button
-    onClick={exportToPDF}
-    style={{
-      background: "#ef4444",
-      color: "white",
-      border: "none",
-      padding: "12px 20px",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "15px",
-      fontWeight: "600",
-    }}
-  >
-    📄 Export to PDF
-  </button>
-</div>
+  exportToExcel={exportToExcel}
 
-      <div className="form-card">
+  exportToPDF={exportToPDF}
 
-        <h2>
-          {editingId ? "Update Company" : "Add Company"}
-        </h2>
-
-        <input
-          type="text"
-          placeholder="Company Name"
-          value={companyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder="Role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        />
-
-        <input
-  type="date"
-  value={deadline}
-  onChange={(e) => setDeadline(e.target.value)}
 />
+<CompanyForm
+  editingId={editingId}
 
-<textarea
-  placeholder="Notes..."
-  value={notes}
-  onChange={(e) => setNotes(e.target.value)}
-  rows="4"
+  companyName={companyName}
+  setCompanyName={setCompanyName}
+
+  role={role}
+  setRole={setRole}
+
+  deadline={deadline}
+  setDeadline={setDeadline}
+
+  notes={notes}
+  setNotes={setNotes}
+
+  status={status}
+  setStatus={setStatus}
+
+  handleSubmit={handleSubmit}
 />
-
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option>Applied</option>
-          <option>Interview</option>
-          <option>Rejected</option>
-          <option>Selected</option>
-        </select>
-
-        <button onClick={handleSubmit}>
-          {editingId ? "Update Company" : "Add Company"}
-        </button>
-
-      </div>
-
       <h2
         style={{
           color: "white",
@@ -423,63 +364,33 @@ const exportToPDF = () => {
         Your Companies
       </h2>
 
-      {loading ? (
-        <h2 style={{ color: "white" }}>
-          Loading...
-        </h2>
-      ) : companies.length === 0 ? (
-        <h2 style={{ color: "white" }}>
-          No Companies Found
-        </h2>
-      ) : (
-        filteredCompanies.map((company) => (
+      <CompanyList
 
-  <CompanyCard
+  loading={loading}
 
-   
+  filteredCompanies={filteredCompanies}
 
-    key={company._id}
+  setEditingId={setEditingId}
 
-    company={company}
+  setCompanyName={setCompanyName}
 
-    onEdit={() => {
+  setRole={setRole}
 
-      setEditingId(company._id);
+  setStatus={setStatus}
 
-      setCompanyName(company.companyName);
+  setDeadline={setDeadline}
 
-      setRole(company.role);
+  setNotes={setNotes}
 
-      setStatus(company.status);
-setDeadline(
-  company.deadline
-    ? company.deadline.split("T")[0]
-    : ""
-);
-      setNotes(company.notes || "");
+  setDeleteId={setDeleteId}
 
-    }}
+  setShowModal={setShowModal}
 
-  onDelete={() => {
+  setSelectedCompany={setSelectedCompany}
 
-  setDeleteId(company._id);
+  setShowInterviewModal={setShowInterviewModal}
 
-  setShowModal(true);
-
-}
-  }
-onPrepare={() => {
-
-  setSelectedCompany(company.companyName);
-
-  setShowInterviewModal(true);
-
-}}
-
-  />
-
-))
-      )}
+/>
 
     </div>
 

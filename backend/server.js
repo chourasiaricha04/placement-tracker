@@ -1,14 +1,16 @@
+console.log("🔥 SERVER FILE UPDATED 🔥");
 
 const express = require("express");
 const dotenv = require("dotenv");
-const resumeRoutes = require("./routes/resumeRoutes");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
+// Load .env BEFORE importing routes/services
+dotenv.config();
+
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
-
-dotenv.config();
+const resumeRoutes = require("./routes/resumeRoutes");
 
 const app = express();
 
@@ -23,6 +25,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/resume", resumeRoutes);
+
 // Test Route
 app.get("/", (req, res) => {
   res.send("Server is Running 🚀");

@@ -20,14 +20,14 @@ function ResumeAnalyzer() {
   try{
 
     const response = await axios.post(
+  "http://localhost:5000/api/resume/analyze",
+  formData
+);
 
-      "http://localhost:5000/api/resume/analyze",
+console.log("BACKEND RESPONSE:");
+console.log(response.data);
 
-      formData
-
-    );
-
-    setAnalysis(response.data);
+setAnalysis(response.data);
 
   }
 
