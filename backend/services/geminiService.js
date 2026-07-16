@@ -4,19 +4,26 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-const analyzeResume = async (resumeText) => {
-  console.log("➡️ Calling Gemini...");
-
+const analyzeResume = async (
+  resumeText,
+  jobDescription
+) => {
   const prompt = `
-You are an experienced ATS evaluator and senior technical recruiter.
+You are an ATS evaluator and senior technical recruiter.
 
-Analyze the resume below.
+Compare the candidate resume against the supplied job description.
 
-Return ONLY valid JSON.
-Do not use markdown.
-Do not add explanations outside JSON.
+Return a realistic ATS-style match analysis.
 
-Return exactly this structure:
+Scoring criteria:
+- Job-description keyword match
+- Relevant technical skills
+- Education relevance
+- Project relevance
+- Experience relevance
+- Resume clarity and ATS readability
+
+Return ONLY valid JSON in exactly this structure:
 
 {
   "atsScore": 0,
@@ -25,26 +32,33 @@ Return exactly this structure:
   "missingSkills": [],
   "strengths": [],
   "weaknesses": [],
-  "suggestions": []
+  "suggestions": [],
+  "interviewReadiness": "",
+  "keywordMatchScore": 0
 }
 
 Rules:
-- atsScore must be between 0 and 100.
-- matchedSkills must only include skills present in the resume.
-- missingSkills should contain relevant skills that would strengthen the profile.
-- strengths, weaknesses and suggestions must be specific to the resume.
+- atsScore and keywordMatchScore must be numbers from 0 to 100.
+- Do not claim that this is an official vendor ATS score.
+- matchedSkills must be supported by both the resume and job description.
+- missingSkills must come from the job description but be absent from the resume.
+- Suggestions must be specific and honest.
+- Do not recommend adding skills the candidate does not possess as if they already have them.
 
 Resume:
-
 ${resumeText}
+
+Job Description:
+${jobDescription}
 `;
 
   const response = await ai.models.generateContent({
     model: "gemini-3.5-flash",
     contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+    },
   });
-
-  console.log("✅ Gemini responded");
 
   return response.text;
 };

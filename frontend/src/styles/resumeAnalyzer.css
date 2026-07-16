@@ -38,3 +38,19 @@
 .analyze-btn:hover{
     background:#4f46e5;
 }
+.job-description-input{
+  width:100%;
+  margin-top:18px;
+  padding:15px;
+  border:none;
+  outline:none;
+  resize:vertical;
+  border-radius:12px;
+  background:#334155;
+  color:white;
+  font-size:14px;
+}
+
+.job-description-input::placeholder{
+  color:#94a3b8;
+}

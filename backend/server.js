@@ -1,4 +1,4 @@
-console.log("🔥 SERVER FILE UPDATED 🔥");
+
 
 const express = require("express");
 const dotenv = require("dotenv");
@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
 });
 
 // Start Server
-app.listen(5000, () => {
-  console.log("Server Started on Port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server Started on Port ${PORT}`);
 });

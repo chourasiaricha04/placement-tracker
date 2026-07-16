@@ -41,7 +41,19 @@ router.post(
       console.log("➡️ Sending resume to Gemini...");
 
       // Keep the original text instead of converting it to lowercase.
-      const aiResponse = await analyzeResume(resumeText);
+      const jobDescription =
+  req.body.jobDescription?.trim();
+
+if (!jobDescription) {
+  return res.status(400).json({
+    message: "Job description is required.",
+  });
+}
+
+const aiResponse = await analyzeResume(
+  resumeText,
+  jobDescription
+);
 
       console.log("✅ Gemini response received");
 
