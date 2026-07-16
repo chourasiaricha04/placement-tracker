@@ -173,20 +173,19 @@ VITE_API_URL=
 # 📸 Screenshots
 
 ### Login Page
-
-(Add Screenshot)
+coming soon....
 
 ### Dashboard
 
-(Add Screenshot)
+coming soon....
 
 ### AI Resume Analyzer
 
-(Add Screenshot)
+coming soon....
 
 ### Resume Analysis
 
-(Add Screenshot)
+coming soon....
 
 ---
 
@@ -206,7 +205,7 @@ VITE_API_URL=
 **Richa Chourasia**
 
 LinkedIn:
-(Add LinkedIn URL)
+https://www.linkedin.com/in/richa-chourasia-a7b1442a6/
 
 GitHub:
 https://github.com/chourasiaricha04
