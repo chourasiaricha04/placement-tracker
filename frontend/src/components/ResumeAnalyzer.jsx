@@ -33,9 +33,9 @@ function ResumeAnalyzer() {
 
     try {
       const response = await axios.post(
-        "https://placement-tracker-api.onrender.com/api/resume/analyze",
-        formData
-      );
+  `${import.meta.env.VITE_API_URL}/api/resume/analyze`,
+  formData
+);
 
       setAnalysis(response.data);
     } catch (err) {
