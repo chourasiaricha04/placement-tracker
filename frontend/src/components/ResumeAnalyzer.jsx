@@ -1,4 +1,3 @@
-
 import "../styles/resumeAnalyzer.css";
 import ResumeScore from "./ResumeScore";
 import axios from "axios";
@@ -11,104 +10,78 @@ function ResumeAnalyzer() {
   const [loadingText, setLoadingText] = useState("🤖 Analyzing...");
   const [jobDescription, setJobDescription] = useState("");
 
- 
-
   const handleUpload = (e) => {
-    setResume(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+
+    setResume(selectedFile || null);
     setAnalysis(null);
   };
 
   const analyzeResume = async () => {
-  if (!resume || !jobDescription.trim()) {
-    alert("Please upload a resume and paste the job description.");
-    return;
-  }
+    if (!resume || !jobDescription.trim()) {
+      alert("Please upload a resume and paste the job description.");
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
+    setAnalysis(null);
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("resume", resume);
-  formData.append("jobDescription", jobDescription);
+    formData.append("resume", resume);
+    formData.append("jobDescription", jobDescription);
 
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/resume/analyze",
-      formData
-    );
+    try {
+      const response = await axios.post(
+        "https://placement-tracker-api.onrender.com/api/resume/analyze",
+        formData
+      );
 
-    setAnalysis(response.data);
-  } catch (err) {
-    console.log(err);
-  } finally {
-    setLoading(false);
-  }
-};
+      setAnalysis(response.data);
+    } catch (err) {
+      console.error("Resume analysis error:", err);
+
+      alert(
+        err.response?.data?.message ||
+          "Unable to analyze the resume. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
+    if (!loading) {
+      setLoadingText("🤖 Analyzing...");
+      return;
+    }
 
-  if (!loading) {
-    setLoadingText("🤖 Analyzing...");
-    return;
-  }
+    const messages = [
+      "📄 Reading Resume...",
+      "🔍 Extracting Skills...",
+      "🧠 Calculating ATS Score...",
+      "✨ Generating Suggestions...",
+    ];
 
-  const messages = [
-    "📄 Reading Resume...",
-    "🔍 Extracting Skills...",
-    "🧠 Calculating ATS Score...",
-    "✨ Generating Suggestions...",
-  ];
-
-  let index = 0;
-
-  setLoadingText(messages[index]);
-
-  const interval = setInterval(() => {
-
-    index = (index + 1) % messages.length;
+    let index = 0;
 
     setLoadingText(messages[index]);
 
-  }, 1200);
+    const interval = setInterval(() => {
+      index = (index + 1) % messages.length;
+      setLoadingText(messages[index]);
+    }, 1200);
 
-  return () => clearInterval(interval);
-
-}, [loading]);useEffect(() => {
-
-  if (!loading) {
-    setLoadingText("🤖 Analyzing...");
-    return;
-  }
-
-  const messages = [
-    "📄 Reading Resume...",
-    "🔍 Extracting Skills...",
-    "🧠 Calculating ATS Score...",
-    "✨ Generating Suggestions...",
-  ];
-
-  let index = 0;
-
-  setLoadingText(messages[index]);
-
-  const interval = setInterval(() => {
-
-    index = (index + 1) % messages.length;
-
-    setLoadingText(messages[index]);
-
-  }, 1200);
-
-  return () => clearInterval(interval);
-
-}, [loading]);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   return (
     <div className="resume-card">
       <h2>📄 AI Resume Analyzer</h2>
 
       <p>
-        Upload your resume and receive an ATS score with skill suggestions.
+        Upload your resume and compare it with a job description to receive an
+        ATS-style match score and AI suggestions.
       </p>
 
       <input
@@ -118,12 +91,12 @@ function ResumeAnalyzer() {
       />
 
       <textarea
-  className="job-description-input"
-  placeholder="Paste the job description here..."
-  value={jobDescription}
-  onChange={(e) => setJobDescription(e.target.value)}
-  rows="8"
-/>
+        className="job-description-input"
+        placeholder="Paste the job description here..."
+        value={jobDescription}
+        onChange={(e) => setJobDescription(e.target.value)}
+        rows="8"
+      />
 
       {resume && (
         <div className="resume-info">
@@ -132,18 +105,16 @@ function ResumeAnalyzer() {
           <p>{resume.name}</p>
 
           <button
-  className="analyze-btn"
-  onClick={analyzeResume}
-  disabled={loading}
->
-  {loading ? loadingText : "Analyze Resume"}
-</button>
+            className="analyze-btn"
+            onClick={analyzeResume}
+            disabled={loading}
+          >
+            {loading ? loadingText : "Analyze Resume"}
+          </button>
         </div>
       )}
 
-      {analysis && (
-        <ResumeScore analysis={analysis} />
-      )}
+      {analysis && <ResumeScore analysis={analysis} />}
     </div>
   );
 }
